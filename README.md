@@ -39,6 +39,36 @@ cd "C:\IT Inholland Year 4\Minor Cloud Development\BuyMyHouse"
 .\start-all.ps1
 ```
 
+**If you get "script cannot be loaded" error (Windows security):**
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start-all.ps1
+```
+
+**If the script doesn't work, start services manually in separate terminals:**
+
+Terminal 1 - Azurite:
+```powershell
+azurite --silent --location c:\azurite
+```
+
+Terminal 2 - Listings API:
+```powershell
+cd BuyMyHouse.Listings
+dotnet run
+```
+
+Terminal 3 - Mortgage API:
+```powershell
+cd BuyMyHouse.Mortgage
+dotnet run
+```
+
+Terminal 4 - Azure Functions:
+```powershell
+cd BuyMyHouse.Functions
+func start
+```
+
 **If you see an HTTPS certificate warning:**
 ```powershell
 dotnet dev-certs https --trust
@@ -155,6 +185,24 @@ Invoke-WebRequest http://localhost:7071/api/test-send
 ---
 
 ## Troubleshooting
+
+**SQL Server LocalDB won't start:**
+```powershell
+# Check LocalDB instances
+sqllocaldb info
+
+# If MSSQLLocalDB doesn't exist, create it
+sqllocaldb create MSSQLLocalDB
+
+# Start the instance
+sqllocaldb start MSSQLLocalDB
+
+# If it still fails, stop and delete the instance, then recreate
+sqllocaldb stop MSSQLLocalDB
+sqllocaldb delete MSSQLLocalDB
+sqllocaldb create MSSQLLocalDB
+sqllocaldb start MSSQLLocalDB
+```
 
 **Services won't start:**
 ```powershell
