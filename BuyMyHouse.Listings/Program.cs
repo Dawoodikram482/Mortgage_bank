@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using BuyMyHouse.Core.Data;
 using BuyMyHouse.Core.Interfaces;
 using BuyMyHouse.Core.Repositories;
+using BuyMyHouse.Core.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<HouseDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HouseDatabase")));
 
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
+builder.Services.AddScoped<IImageStorageService, ImageStorageService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

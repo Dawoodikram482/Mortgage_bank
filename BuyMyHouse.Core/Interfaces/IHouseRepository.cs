@@ -7,5 +7,6 @@ namespace BuyMyHouse.Core.Interfaces
         Task<IEnumerable<House>> GetAllAsync();
         Task<IEnumerable<House>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<House?> GetByIdAsync(int id);
+        Task UpdateAsync(House house);
     }
 }

@@ -20,6 +20,11 @@ public class HouseDbContext: DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Price).IsRequired();
             entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.ImageUrls)
+                .HasConversion(
+                    v => string.Join(',', v),
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
+                .HasColumnType("nvarchar(max)");
             entity.HasIndex(e => e.Price);
             entity.HasIndex(e => e.City);
         });
@@ -34,7 +39,7 @@ public class HouseDbContext: DbContext
                 Bedrooms = 3,
                 Bathrooms = 2,
                 SquareMeters = 120,
-                Description = "Beautiful canal house in the heart of Amsterdam",
+                Description = "Beautiful canal house in the heart of Amsterdam. Features stunning views of the canals.",
                 ListedDate = DateTime.UtcNow.AddDays(-30),
                 IsAvailable = true
             },
@@ -47,7 +52,7 @@ public class HouseDbContext: DbContext
                 Bedrooms = 2,
                 Bathrooms = 1,
                 SquareMeters = 95,
-                Description = "Modern apartment near the beach",
+                Description = "Modern apartment near the beach. Walking distance to all amenities.",
                 ListedDate = DateTime.UtcNow.AddDays(-15),
                 IsAvailable = true
             }

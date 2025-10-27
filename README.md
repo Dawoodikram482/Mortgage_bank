@@ -7,7 +7,7 @@ A cloud-based estate agency platform with 3 microservices for house listings, mo
 ## What This Project Does
 
 **Services:**
-1. **Listings API** - Manages house listings (SQL Server)
+1. **Listings API** - Manages house listings (SQL Server) with image storage in Blob Storage
 2. **Mortgage API** - Handles mortgage applications (Azure Table Storage with CQRS)
 3. **Azure Functions** - Processes applications and sends offer emails (timer-triggered batch jobs)
 
@@ -16,6 +16,7 @@ A cloud-based estate agency platform with 3 microservices for house listings, mo
 - Calculates interest rates (3.5% - 5.0%)
 - Generates mortgage offer documents
 - Sends email notifications
+- Stores house images in Azure Blob Storage
 
 ---
 
@@ -64,7 +65,25 @@ Invoke-WebRequest https://localhost:5001/api/houses
 
 You should see 2 pre-seeded houses.
 
-### 2. Test Mortgage Application
+### 2. Test Image Upload (Optional)
+Upload an image for a house using Swagger UI:
+1. Go to https://localhost:5001/swagger
+2. Try `POST /api/houses/{id}/images`
+3. Set `id` to `1` or `2`
+4. Upload any image file (jpg, png, gif)
+5. The image URL will be returned and stored in Blob Storage
+
+Or using PowerShell:
+```powershell
+$filePath = "C:\path\to\your\image.jpg"
+$uri = "https://localhost:5001/api/houses/1/images"
+$form = @{
+    image = Get-Item -Path $filePath
+}
+Invoke-RestMethod -Uri $uri -Method Post -Form $form
+```
+
+### 3. Test Mortgage Application
 **Using Swagger UI:**
 1. Go to https://localhost:5002/swagger
 2. Try `POST /api/mortgageapplications`
@@ -120,8 +139,8 @@ Invoke-WebRequest http://localhost:7071/api/test-send
 
 **View Blob Storage:**
 1. In Storage Explorer, expand "Blob Containers"
-2. Open `mortgage-offers` container
-3. See generated word documents
+2. Open `mortgage-offers` container - see generated mortgage docs
+3. Open `house-images` container - see uploaded house images
 
 ---
 

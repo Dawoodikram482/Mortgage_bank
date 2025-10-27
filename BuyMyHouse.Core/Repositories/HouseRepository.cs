@@ -31,5 +31,11 @@ namespace BuyMyHouse.Core.Repositories
         {
             return await _context.Houses.FindAsync(id);
         }
+
+        public async Task UpdateAsync(House house)
+        {
+            _context.Houses.Update(house);
+            await _context.SaveChangesAsync();
+        }
     }
 }
